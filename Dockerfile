@@ -5,6 +5,7 @@ COPY controllers/ /userauth/controllers/
 COPY db/ /userauth/db/
 COPY routes/ /userauth/routes/
 COPY user-server.js /userauth/
+COPY test/ /userauth/test/ 
 COPY jwtRS256.key package.json package-lock.json sequelize-postgres-docker.yaml /userauth/
 
 
