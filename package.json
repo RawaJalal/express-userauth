@@ -6,7 +6,7 @@
   "scripts": {
     "sqlite:run": "cross-env SEQUELIZE_CONNECT=sequelize-sqlite3.yaml nodemon user-server.js",
     "docker": "nodemon ./user-server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +27,10 @@
     "sqlite3": "^4.0.2"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.3",
+    "sinon": "^6.1.5",
     "supertest": "^3.1.0"
   }
 }
