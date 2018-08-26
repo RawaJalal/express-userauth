@@ -3,6 +3,7 @@ const jsyaml = require('js-yaml');
 const fs = require('fs-extra');
 const util = require('util');
 const bcrypt = require('bcryptjs');
+const { SEQUELIZE_CONNECT } = require('../config.js');
 
 let UserModel;
 let sequlz;
@@ -11,12 +12,21 @@ const readFile = util.promisify(fs.readFile);
 
 async function connectDB() {
     if (UserModel) return UserModel.sync();
-    const yamlttext = await readFile(process.env.SEQUELIZE_CONNECT, 'utf8');
-    const params = await jsyaml.safeLoad(yamlttext, 'utf8');
-    if (!sequlz) sequlz = new Sequelize(params.dbname, params.username, params.password, {
-        ...params.params
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'staging') {
+        const yamlttext = await readFile(SEQUELIZE_CONNECT, 'utf8');
+        const params = await jsyaml.safeLoad(yamlttext, 'utf8');
+        if (!sequlz) sequlz = new Sequelize(params.dbname, params.username, params.password, {
+            ...params.params
+        });
+    } else if (process.env.NODE_ENV = 'production') {
+        if (!sequlz) sequlz = new Sequelize(process.env.DATABASE_URL, {
+            dialect: 'postgres',
+            protocol: 'postgres',
+            dialectOptions: {
+                ssl: true
+            }
+        });
     }
-    );
     if (!UserModel) UserModel = sequlz.define('User', {
         id: {
             type: Sequelize.INTEGER,

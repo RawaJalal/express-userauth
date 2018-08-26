@@ -17,7 +17,6 @@ exports.login = async (req, res, next) => {
     }
     try {
         const validUser = await userModel.checkUserAndPassword(req.body.username, req.body.password);
-        console.log(validUser);
         if (validUser && validUser.check === true) {
             const user = await userModel.find(req.body.username);
             const privateKey = await readFile('./jwtRS256.key');
@@ -62,7 +61,6 @@ exports.register = async (req, res, next) => {
             });
         } else {
             const user = await userModel.createUser(req.body.username, req.body.password);
-            console.log(user.dataValues);
             if (user && user.username) {
                 const privateKey = await readFile('./jwtRS256.key');
                 let token = jwt.sign({

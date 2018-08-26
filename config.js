@@ -1,0 +1,1 @@
+exports.SEQUELIZE_CONNECT = process.env.SEQUELIZE_CONNECT;
